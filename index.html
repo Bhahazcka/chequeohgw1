@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>CHEQUEO PERSONALIZADO DE TU SALUD · HGW</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Orbitron:wght@600;700;800&display=swap');
+:root{--bg:#04100a;--mid:#0b2615;--cy:#39e28f;--gold:#f5c542;--hi:#eafef3;--lo:#a1c8b3;--blue:#6db8ff}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{min-height:100vh;min-height:100dvh;color:var(--hi);font-family:'Montserrat',Arial,sans-serif;background:radial-gradient(ellipse 60% 40% at 20% 10%,rgba(57,226,143,.2),transparent 60%),radial-gradient(ellipse 55% 45% at 85% 90%,rgba(34,194,184,.14),transparent 60%),linear-gradient(160deg,var(--bg),var(--mid) 50%,var(--bg));background-attachment:fixed;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;position:relative;padding:clamp(18px,4vw,28px) 14px max(28px,env(safe-area-inset-bottom))}
+#stars{position:fixed;inset:0;pointer-events:none;z-index:0}
+.star{position:absolute;background:#fff;border-radius:50%;opacity:.4;animation:tw linear infinite}
+@keyframes tw{0%,100%{opacity:.12}50%{opacity:.8}}
+.aurora{position:fixed;inset:-30%;z-index:0;pointer-events:none;background:conic-gradient(from 0deg at 50% 50%,rgba(57,226,143,.07),transparent 30%,rgba(34,194,184,.07) 55%,transparent 80%,rgba(57,226,143,.07));animation:spin 60s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.brand{position:absolute;top:clamp(12px,3vw,22px);left:clamp(12px,3vw,22px);z-index:10;width:clamp(44px,10vw,66px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#0f351e;border:2px solid rgba(57,226,143,.6);box-shadow:0 0 18px rgba(57,226,143,.4)}
+.brand img{width:100%;height:100%;object-fit:contain;padding:4px;display:none}
+.brand b{font:800 clamp(.6rem,2.4vw,.8rem)/1 'Orbitron',sans-serif;color:var(--cy);letter-spacing:1px}
+header{position:relative;z-index:2;text-align:center;margin-top:clamp(10px,2vw,18px);max-width:680px;width:100%}
+.wordmark{font:800 clamp(1.5rem,6.4vw,2.4rem)/1 'Orbitron',sans-serif;letter-spacing:clamp(3px,1.4vw,8px);background:linear-gradient(180deg,#f2fdf7,#b4f2d3 35%,#59c48b 70%,#246b45);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 16px rgba(57,226,143,.4))}
+.tagline{margin-top:8px;font-size:clamp(.7rem,2.4vw,.85rem);font-weight:600;letter-spacing:2px;color:var(--lo)}
+.badge{margin-top:12px;display:inline-flex;align-items:center;gap:8px;font:600 clamp(.56rem,1.9vw,.64rem) 'Orbitron',sans-serif;letter-spacing:2px;color:var(--cy);padding:5px 14px;border:1px solid rgba(57,226,143,.35);border-radius:20px;background:rgba(57,226,143,.06)}
+.badge i{width:7px;height:7px;border-radius:50%;background:var(--cy);box-shadow:0 0 8px var(--cy);animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.25}}
+main{position:relative;z-index:2;width:min(860px,100%);margin-top:clamp(18px,4vw,30px)}
+.panel{background:linear-gradient(160deg,rgba(16,56,32,.78),rgba(6,22,12,.9));border:1px solid rgba(140,240,190,.18);border-radius:22px;padding:clamp(16px,4vw,28px);box-shadow:0 10px 40px rgba(0,0,0,.45),0 0 40px rgba(57,226,143,.12);margin-bottom:16px}
+.lead{text-align:center;font-size:clamp(.8rem,2.6vw,.92rem);line-height:1.65;color:var(--lo)}
+.progress{position:sticky;top:0;z-index:20;margin:0 -2px 14px;padding:10px 2px 6px;background:linear-gradient(180deg,rgba(4,16,10,.95),rgba(4,16,10,0))}
+.bar{height:6px;border-radius:6px;background:rgba(57,226,143,.12);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#17b06b,var(--cy));box-shadow:0 0 10px var(--cy);transition:width .3s}
+.pt{margin-top:6px;text-align:center;font:600 .6rem 'Orbitron',sans-serif;letter-spacing:1.5px;color:var(--lo)}
+h2.st{font:700 clamp(.85rem,3.4vw,1.05rem)/1.3 'Orbitron',sans-serif;color:var(--cy);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(57,226,143,.25)}
+label.fl{display:block;margin:14px 0 8px;font-weight:700;font-size:.85rem;color:var(--hi)}
+input[type=text],input[type=number],select,textarea{width:100%;padding:13px 14px;font:500 1rem 'Montserrat',sans-serif;color:var(--hi);background:rgba(4,16,10,.7);border:1.5px solid rgba(57,226,143,.35);border-radius:12px;outline:0;transition:border-color .2s,box-shadow .2s;margin-bottom:4px}
+select option{background:#0b2615;color:#eafef3}
+textarea{resize:vertical;min-height:70px}
+input::placeholder,textarea::placeholder{color:var(--lo);opacity:.8}
+input:focus,select:focus,textarea:focus{border-color:var(--cy);box-shadow:0 0 18px rgba(57,226,143,.3)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:0 14px}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));gap:8px;margin-bottom:10px}
+.opt{position:relative;cursor:pointer}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+.opt span{display:flex;align-items:center;gap:10px;min-height:46px;padding:10px 14px;font-size:.82rem;font-weight:600;line-height:1.25;border-radius:12px;border:1px solid rgba(140,240,190,.2);background:rgba(4,16,10,.55);color:var(--lo);transition:.15s}
+.opt span::before{content:'';flex:none;width:16px;height:16px;border-radius:5px;border:2px solid rgba(57,226,143,.5)}
+.opt input[type=radio]+span::before{border-radius:50%}
+.opt input:checked+span{color:var(--hi);border-color:var(--cy);background:rgba(57,226,143,.12);box-shadow:0 0 14px rgba(57,226,143,.25)}
+.opt input:checked+span::before{background:var(--cy);box-shadow:0 0 8px var(--cy)}
+.opt input:focus-visible+span{outline:2px solid #fff;outline-offset:2px}
+.scan{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.scan .st1{font-weight:700;font-size:.9rem;color:var(--cy);min-height:22px}
+.scan .st2{font-size:.78rem;color:var(--lo)}
+.blink{animation:bl 1s linear infinite}
+.sensor{margin-top:10px;width:clamp(96px,28vw,120px);height:clamp(116px,34vw,144px);border-radius:46px;border:3px solid rgba(57,226,143,.5);position:relative;overflow:hidden;cursor:pointer;background:#0f351e;box-shadow:0 0 24px rgba(57,226,143,.3);transition:.3s;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.sensor:hover{transform:scale(1.03)}
+.sensor img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none;opacity:.85}
+.sensor.scanning{box-shadow:0 0 40px rgba(57,226,143,.7);cursor:wait}
+.sensor.finished{border-color:var(--gold);box-shadow:0 0 30px rgba(245,197,66,.5);cursor:default}
+.beam{position:absolute;top:0;left:0;width:100%;height:6px;background:var(--cy);box-shadow:0 0 16px var(--cy);opacity:0;z-index:2}
+.sensor.scanning .beam{opacity:1;animation:sm 2s linear infinite}
+@keyframes sm{0%,100%{top:0}50%{top:100%}}
+.go{width:100%;margin-top:6px;font:700 clamp(.75rem,2.6vw,.9rem) 'Orbitron',sans-serif;letter-spacing:1.5px;color:#041c10;border:0;cursor:pointer;padding:16px;border-radius:30px;min-height:54px;background:linear-gradient(180deg,var(--cy),#17b06b);box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 0 22px rgba(57,226,143,.5);transition:transform .2s}
+.go:hover{transform:translateY(-2px)}.go:active{transform:scale(.97)}
+.go:focus-visible,.btn:focus-visible,.day:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#res{display:none}
+.load{text-align:center;padding:36px 16px}
+.spn{width:44px;height:44px;margin:0 auto 16px;border-radius:50%;border:4px solid rgba(57,226,143,.15);border-top-color:var(--cy);animation:spin 1s linear infinite;box-shadow:0 0 16px rgba(57,226,143,.3)}
+.lt{font:600 .75rem/1.5 'Orbitron',sans-serif;color:var(--cy)}
+.rin h3{font:700 clamp(1rem,4vw,1.3rem) 'Orbitron',sans-serif;color:var(--cy);text-align:center;margin-bottom:14px}
+.rin p{font-size:.88rem;line-height:1.7;color:var(--lo);text-align:justify;margin-bottom:10px}
+.rin p b,.rin p strong{color:var(--hi)}
+.diag{border-left:5px solid var(--gold);background:rgba(245,197,66,.07);border-radius:14px;padding:18px}
+.dt{font:700 .8rem 'Orbitron',sans-serif;color:var(--gold);margin-bottom:10px;letter-spacing:1px}
+.diag ul{list-style:none}
+.diag li{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.12);font-size:.84rem;line-height:1.5;color:var(--lo)}
+.diag li:last-child{border:0}.diag li strong{color:var(--cy)}
+.pc{border-radius:18px;overflow:hidden;margin-bottom:16px;border:1px solid rgba(57,226,143,.3);background:linear-gradient(160deg,rgba(16,56,32,.85),rgba(6,22,12,.95));box-shadow:0 0 26px rgba(57,226,143,.12)}
+.ph{padding:12px 18px;font:700 clamp(.7rem,2.8vw,.82rem)/1.35 'Orbitron',sans-serif;color:#041c10;background:linear-gradient(90deg,var(--cy),#17b06b)}
+.pb{display:flex;gap:18px;padding:18px;align-items:flex-start}
+.pb img{flex:none;width:150px;max-width:34%;height:auto;object-fit:contain;border-radius:12px;background:#fff;padding:6px}
+.pt2{flex:1;min-width:0}
+.ev,.hg{padding:12px 14px;border-radius:0 12px 12px 0;font-size:.82rem;line-height:1.6;color:var(--lo)}
+.ev{border-left:4px solid var(--blue);background:rgba(109,184,255,.08);margin-bottom:12px}
+.hg{border-left:4px solid var(--cy);background:rgba(57,226,143,.08)}
+.ev b{color:var(--hi)}
+.tt{font:700 .62rem 'Orbitron',sans-serif;letter-spacing:1px;margin-bottom:6px}
+.ev .tt{color:var(--blue)}.hg .tt{color:var(--cy)}
+.menu .mh{font:700 clamp(.8rem,3.2vw,1rem)/1.35 'Orbitron',sans-serif;color:var(--cy);margin-bottom:14px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;scrollbar-width:thin}
+.day{flex:none;cursor:pointer;font:600 .78rem 'Montserrat',sans-serif;color:var(--lo);padding:10px 14px;border-radius:22px;border:1px solid rgba(140,240,190,.25);background:rgba(4,16,10,.6);min-height:44px}
+.day.on{color:#041c10;background:linear-gradient(180deg,var(--cy),#17b06b);border-color:transparent;font-weight:800}
+.dp{display:none}.dp.on{display:block;animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.meal{padding:12px 0;border-bottom:1px dashed rgba(255,255,255,.12);font-size:.88rem;line-height:1.55}
+.meal:last-child{border:0}
+.meal b{color:var(--cy)}.meal em{display:block;margin-top:3px;font-style:normal;font-size:.76rem;color:var(--lo);opacity:.85}
+.adv{border-top:3px solid var(--gold)}
+.adv .mh{color:var(--gold)}
+.as{margin-bottom:16px}.as h4{font:700 .78rem 'Orbitron',sans-serif;color:var(--gold);margin-bottom:6px}.as p{font-size:.84rem;line-height:1.65;color:var(--lo)}
+.disc{text-align:center;font-style:italic;font-size:.75rem;line-height:1.55;color:var(--lo);padding:14px;border-radius:12px;background:rgba(57,226,143,.06);border:1px solid rgba(57,226,143,.15);margin-bottom:16px}
+.acts{display:flex;flex-wrap:wrap;gap:10px}
+.btn{flex:1 1 170px;display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;cursor:pointer;border:0;font:700 .72rem 'Orbitron',sans-serif;letter-spacing:1px;padding:14px 16px;min-height:50px;border-radius:28px;transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.b1{color:#041c10;background:linear-gradient(180deg,var(--cy),#17b06b);box-shadow:0 0 18px rgba(57,226,143,.45)}
+.b2{color:#fff;background:linear-gradient(180deg,#2fd36b,#128c4a)}
+.b3{color:var(--cy);background:rgba(57,226,143,.1);border:1px solid rgba(57,226,143,.5)}
+.b4{color:#041c10;background:linear-gradient(180deg,#fff,#cfe9db)}
+.warn{display:none;margin:4px 0 14px;padding:14px 16px;border-radius:14px;font-size:.88rem;font-weight:700;line-height:1.5;text-align:center;color:#ffd9a8;background:rgba(255,138,61,.12);border:1px solid rgba(255,138,61,.6)}.warn.on{display:block;animation:pop .35s ease}.warn.ok{color:#bff5d9;background:rgba(57,226,143,.12);border-color:var(--cy)}.panel.hl{animation:hl 1s ease 3}@keyframes hl{50%{box-shadow:0 0 44px rgba(255,138,61,.85)}}
+#toast{position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;z-index:60;background:#0f351e;color:var(--hi);border:1px solid var(--cy);padding:12px 20px;border-radius:24px;font-size:.82rem;font-weight:600;box-shadow:0 0 24px rgba(57,226,143,.4);transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+footer{position:relative;z-index:2;margin-top:clamp(20px,5vw,36px);text-align:center;font-size:clamp(.6rem,2vw,.7rem);color:var(--lo);opacity:.75;max-width:520px}
+@media(max-width:600px){.pb{flex-direction:column;align-items:center}.pb img{width:170px;max-width:60%}.rin p{text-align:left}}
+@media(max-width:420px){.btn{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.aurora,.star,.badge i,.blink{animation:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="brand"><img id="logo" alt="Logo HGW"><b id="mono">HGW</b></div>
+<div class="aurora"></div><div id="stars"></div>
+<header>
+  <div class="wordmark">HGW</div>
+  <p class="tagline">Chequeo personalizado de tu salud</p>
+  <div class="badge"><i></i>Consulta interactiva de bienestar</div>
+</header>
+<main>
+  <div id="formWrap">
+    <div class="panel"><p class="lead">Este cuestionario está diseñado por expertos en nutrición, terapias y prevención del bienestar para evaluar su estado actual, historial médico, hábitos y necesidades preventivas o de tratamiento. Responda con honestidad para una evaluación precisa. Toda información es confidencial.</p></div>
+    <div class="progress"><div class="bar"><i id="pbar"></i></div><div class="pt" id="ptxt">0% COMPLETADO</div></div>
+    <form id="healthQuestionnaire"></form>
+  </div>
+  <div id="res"></div>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+<footer>Copyright©2026. Propiedad de TechRep S.R.L. Todos los derechos reservados.</footer>
+
+<script>
+const LOGO_SRC='https://static.wixstatic.com/media/d00cad_a73297e5a2a34f55a3233e9a439edaf1~mv2.png';
+const CONSULTA='https://multilabintl.wixsite.com/consulta-marce-hgw2';
+const $=id=>document.getElementById(id);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function(){const i=$('logo'),m=$('mono');i.onload=()=>{i.style.display='block';m.style.display='none'};i.onerror=()=>{i.style.display='none'};i.src=LOGO_SRC})();
+(function(){const f=$('stars'),fr=document.createDocumentFragment();for(let i=0;i<60;i++){const s=document.createElement('div'),z=Math.random()*2+.6;s.className='star';s.style.cssText=`width:${z}px;height:${z}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*3}s`;fr.appendChild(s)}f.appendChild(fr)})();
+let tt;function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),2600)}
+
+/* ===== FORMULARIO (mismos campos, nombres y valores del original) ===== */
+const COND=[['diabetes','Diabetes'],['hipertension','Hipertensión'],['cardiopatia','Cardiopatía'],['cancer','Cáncer'],['cancer_gastrico','Cáncer gástrico'],['gastritis','Gastritis media o aguda'],['enfermedad_renal','Enfermedad renal crónica'],['cirrosis_hepatica','Cirrosis hepática'],['epoc','Enfermedad pulmonar obstructiva crónica (EPOC)'],['accidente_cerebrovascular','Accidente cerebrovascular'],['vih','VIH/SIDA'],['tuberculosis','Tuberculosis'],['chagas','Enfermedad de Chagas'],['artritis','Artritis'],['asma','Asma'],['enfermedades_tiroideas','Enfermedades tiroideas (hipotiroidismo, hipertiroidismo, bocio)']];
+const FAM=COND.map(([v,l])=>v==='cardiopatia'?['cardio','Cardiopatías']:[v,l]);
+const chk=(n,l,ex)=>`<div class="opts">${l.concat(ex||[]).map(([v,t])=>`<label class="opt"><input type="checkbox" name="${n}" value="${v}"><span>${t}</span></label>`).join('')}</div>`;
+const rad=(n,l)=>`<div class="opts">${l.map(([v,t])=>`<label class="opt"><input type="radio" name="${n}" value="${v}"><span>${t}</span></label>`).join('')}</div>`;
+const sel=(id,t,l)=>`<label class="fl" for="${id}">${t}</label><select id="${id}" name="${id}"><option value="">Seleccione</option>${l.map(([v,x])=>`<option value="${v}">${x}</option>`).join('')}</select>`;
+const ta=(id,r,ph)=>`<textarea id="${id}" name="${id}" rows="${r}"${ph?` placeholder="${ph}"`:''}></textarea>`;
+const lb=(id,t)=>`<label class="fl" for="${id}">${t}</label>`;
+const SN=[['yes','Sí'],['no','No']],RATE=[['excelente','Excelente'],['muy_buena','Muy buena'],['buena','Buena'],['regular','Regular'],['mala','Mala']];
+const SEC=[
+['Información Personal',`<div class="row"><div>${lb('age','Edad:')}<input type="number" id="age" name="age" min="18" required inputmode="numeric"></div><div>${lb('gender','Género:')}<select id="gender" name="gender" required><option value="">Seleccione</option><option value="masculino">Masculino</option><option value="femenino">Femenino</option><option value="otro">Otro</option><option value="prefiero_no_decir">Prefiero no decir</option></select></div><div>${lb('height','Altura (en cm):')}<input type="number" id="height" name="height" required inputmode="numeric"></div><div>${lb('weight','Peso (en kg):')}<input type="number" id="weight" name="weight" required inputmode="numeric"></div></div>`],
+['Estado de Salud Actual',`<label class="fl">En general, ¿cómo calificaría su salud?</label>${rad('health_rating',RATE)}${lb('current_symptoms','¿Cuáles son sus síntomas actuales, si los tiene? (Describa con detalle):')}${ta('current_symptoms',4)}`],
+['Historial Médico Personal',`<label class="fl">¿Ha sido diagnosticado con alguna enfermedad crónica? (Seleccione todas las que apliquen):</label>${chk('conditions',COND,[['otro','Otro (especifique abajo)']])}${ta('other_conditions',2,'Detalles de otras condiciones...')}${lb('medications','¿Qué medicamentos o suplementos toma actualmente? (Liste con dosis y frecuencia):')}${ta('medications',4)}${lb('allergies','¿Tiene alergias a medicamentos, alimentos u otras sustancias? (Describa):')}${ta('allergies',3)}<label class="fl">¿Ha tenido cirugías o hospitalizaciones en el pasado? (Sí/No):</label>${rad('surgery',[['yes','Sí'],['no','No']])}${ta('surgery_details',3,'Si sí, describa...')}`],
+['Historial Familiar',`<label class="fl">¿Hay antecedentes de enfermedades en su familia? (Seleccione todas las que apliquen):</label>${chk('family_conditions',FAM,[['otro','Otro']])}${ta('family_details',4,'Detalles: edad de diagnóstico, relación familiar...')}`],
+['Estilo de Vida y Hábitos',`<div class="row"><div>${sel('smoking','¿Fuma o ha fumado? (Seleccione):',[['nunca','Nunca'],['pasado','En el pasado'],['actual','Actualmente']])}<input type="text" id="smoking_details" name="smoking_details" placeholder="Si sí, cantidad y duración..."></div><div>${sel('alcohol','¿Consume alcohol? (Frecuencia):',[['nunca','Nunca'],['ocasional','Ocasionalmente'],['semanal','Semanalmente'],['diario','Diariamente']])}</div><div>${sel('exercise','¿Con qué frecuencia hace ejercicio? (Seleccione):',[['nunca','Nunca'],['1-2','1-2 veces por semana'],['3-5','3-5 veces por semana'],['diario','Diariamente']])}</div><div>${lb('sleep','¿Cuántas horas duerme por noche en promedio?')}<input type="number" id="sleep" name="sleep" min="0" max="24" inputmode="numeric"></div></div><label class="fl">¿Experimenta estrés significativo? (Sí/No):</label>${rad('stress',SN)}${ta('stress_details',3,'Si sí, describa...')}`],
+['Salud Mental',`<label class="fl">En general, ¿cómo calificaría su salud mental?</label>${rad('mental_health_rating',RATE)}<label class="fl">¿Ha sido diagnosticado con alguna condición de salud mental? (Seleccione todas las que apliquen):</label>${chk('mental_conditions',[['ansiedad','Ansiedad'],['depresion','Depresión'],['trastorno_bipolar','Trastorno bipolar'],['esquizofrenia','Esquizofrenia'],['otro','Otro (especifique abajo)']])}${ta('other_mental_conditions',2,'Detalles de otras condiciones...')}${lb('mental_medications','¿Toma medicamentos para la salud mental? (Liste con dosis y frecuencia):')}${ta('mental_medications',4)}<label class="fl">¿Ha experimentado alguno de los siguientes síntomas mentales en las últimas semanas? (Seleccione):</label>${chk('mental_symptoms',[['ansiedad_excesiva','Ansiedad excesiva'],['tristeza_persistente','Tristeza persistente'],['cambios_humor','Cambios de humor'],['dificultad_concentracion','Dificultad para concentrarse'],['otro','Otro']])}${ta('mental_symptoms_details',4,'Detalles y duración...')}`],
+['Nutrición y Dieta',`<div class="row"><div>${sel('meals_per_day','¿Cuántas comidas hace al día?',[['1-2','1-2'],['3','3'],['4+','4 o más']])}</div><div>${sel('diet_type','¿Sigue alguna dieta específica? (Seleccione):',[['ninguna','Ninguna'],['vegetariana','Vegetariana'],['vegana','Vegana'],['baja_en_carbo','Baja en carbohidratos'],['otro','Otra']])}</div></div>${ta('diet_details',3,'Describa su dieta típica en un día...')}<label class="fl">¿Está interesado en suplementos para prevención? (Sí/No):</label>${rad('supplements_interest',SN)}`],
+['Síntomas Específicos',`<label class="fl">¿Ha experimentado alguno de los siguientes en las últimas semanas? (Seleccione):</label>${chk('symptoms',[['fatiga','Fatiga'],['dolor_pecho','Dolor en el pecho'],['perdida_peso','Pérdida de peso inexplicable'],['sed_excesiva','Sed excesiva'],['otro','Otro']])}${ta('symptoms_details',4,'Detalles y duración...')}`],
+['Actividad Deportiva',`<label class="fl">¿Es usted deportista o realiza actividades físicas intensas? (Sí/No):</label>${rad('athlete',SN)}<div class="row"><div>${sel('sport_type','¿Qué tipo de deporte practica? (Seleccione):',[['ninguno','Ninguno'],['correr','Correr'],['gimnasio','Gimnasio'],['equipo','Deportes de equipo'],['otro','Otro']])}</div><div>${sel('training_frequency','Frecuencia de entrenamiento:',[['ocasional','Ocasional'],['regular','Regular (3-5 días/semana)'],['intensivo','Intensivo (diario)']])}</div></div>${lb('sport_needs','¿Necesita apoyo nutricional para su rendimiento deportivo? (Describa):')}${ta('sport_needs',4)}`]
+];
+const form=$('healthQuestionnaire');form.noValidate=true;
+form.innerHTML=SEC.map(([t,h],i)=>`<section class="panel" data-s><h2 class="st">${i+1}. ${t}</h2>${h}</section>`).join('')+
+`<section class="panel"><div class="scan"><div id="scannerStatus" class="st1">👆 Presione la huella para iniciar escaneo</div><div class="st2" id="scanInst">(Mantenga presionado 15 segundos)</div><div id="fingerprintSensor" class="sensor" title="Toque para escanear" role="button" tabindex="0" aria-label="Iniciar escaneo"><div class="beam"></div><img src="https://static.wixstatic.com/media/d00cad_a989f87592ac486fa8ed46ad39dec50d~mv2.jpg" alt="Escaneo de huella" draggable="false"></div></div></section><div id="warn" class="warn" role="alert" aria-live="assertive"></div><button type="submit" class="go">SOLICITAR RESULTADOS</button>`;
+
+/* progreso */
+function progress(){let a=0,t=0;const seen={};form.querySelectorAll('input[type=number],select,textarea,input[type=text]').forEach(e=>{t++;if(e.value.trim())a++});form.querySelectorAll('.opts').forEach(g=>{t++;if(g.querySelector('input:checked'))a++});const p=Math.min(100,Math.round(a/t*100));$('pbar').style.width=p+'%';$('ptxt').textContent=p+'% COMPLETADO'}
+form.addEventListener('input',progress);form.addEventListener('change',progress);progress();
+
+/* ===== LECTOR DE HUELLA ===== */
+let isScanning=false,scanFinished=false,scanTimer,countdownInterval,scanLeft=0;
+function showWarn(msg,ok){const w=$('warn');if(!msg){w.className='warn';w.textContent='';return}w.textContent=msg;w.className='warn on'+(ok?' ok':'');w.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'})}
+const sensor=$('fingerprintSensor');
+function startBiometricScan(){
+  if(isScanning||scanFinished)return;
+  const st=$('scannerStatus'),ins=$('scanInst');
+  isScanning=true;sensor.classList.add('scanning');
+  let left=15;scanLeft=15;showWarn('');st.textContent=`Escaneando humanidad biométrica... ${left}s`;st.classList.add('blink');
+  ins.textContent='Por favor, mantenga pulsado hasta finalizar...';ins.style.color='#ff9a6b';
+  countdownInterval=setInterval(()=>{left--;scanLeft=left;if(left>0)st.textContent=`Escaneando humanidad biométrica... ${left}s`},1000);
+  scanTimer=setTimeout(()=>{clearInterval(countdownInterval);finishScan()},15000);
+}
+function finishScan(){
+  const st=$('scannerStatus'),ins=$('scanInst');
+  sensor.classList.remove('scanning');sensor.classList.add('finished');st.classList.remove('blink');
+  st.textContent='✅ Escaneo finalizado correctamente.';st.style.color='#f5c542';
+  ins.textContent='Lectura finalizada y lista para analizar.';ins.style.color='';
+  isScanning=false;scanFinished=true;scanLeft=0;
+  showWarn('✅ Escaneo completo. Ya puedes presionar SOLICITAR RESULTADOS.',true);
+}
+sensor.addEventListener('touchstart',e=>{e.preventDefault();startBiometricScan()},{passive:false});
+sensor.addEventListener('click',startBiometricScan);
+sensor.addEventListener('contextmenu',e=>e.preventDefault());
+sensor.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();startBiometricScan()}});
+
+/* ===== BASE DE DATOS DE SOLUCIONES ===== */
+const hgwSolutions={
+diabetes:{name:"Chitosan Capsule (300mg*60 Cápsulas)",image:"https://static.wixstatic.com/media/d00cad_2d8490e803b5464b839d35d2b33bc602~mv2.png",evidence:"Estudios clínicos publicados por la <b>Mayo Clinic (EE. UU.)</b> y la <b>Universidad de Georgetown</b> indican que la fibra de quitosano reduce significativamente la absorción de colesterol y glucosa en el tracto digestivo, mejorando la sensibilidad a la insulina.",hgw_desc:"El Chitosan de HGW actúa bloqueando selectivamente la absorción de grasas y azúcares en el intestino, ayudando a controlar los picos de glucosa postprandiales de manera natural y segura."},
+cardio:{name:"OMEGA 3-6-9 + Lecithin Softgel",image:"https://static.wixstatic.com/media/d00cad_d8f4aa6a8de24fb0bac6b07f29212427~mv2.jpg",evidence:"Investigaciones de la <b>Facultad de Medicina de Harvard</b> confirman que los ácidos grasos Omega-3 son esenciales para reducir los triglicéridos y la presión arterial. El <b>Johns Hopkins Hospital</b> destaca la lecitina para mantener la elasticidad arterial.",hgw_desc:"HGW ofrece una fórmula balanceada de aceites esenciales de alta pureza diseñados para limpiar las arterias, mejorar la circulación sanguínea y proteger activamente su corazón de enfermedades coronarias."},
+inmune:{name:"Ganoderma Plus Capsule",image:"https://static.wixstatic.com/media/d00cad_36925b10a7024a22a864985c6e8ba8a7~mv2.jpg",evidence:"El hongo Reishi (Ganoderma) es estudiado por centros oncológicos asociados a <b>Cambridge</b> por sus polisacáridos únicos que potencian la actividad de los glóbulos blancos (células Natural Killer) y fortalecen la respuesta inmune.",hgw_desc:"Este suplemento potencia sus defensas naturales desde el primer día. Es ideal para prevenir enfermedades degenerativas, combatir infecciones recurrentes y mejorar la vitalidad general."},
+huesos:{name:"Liquid Calcium & Magnesium With Vitamin D",image:"https://static.wixstatic.com/media/d00cad_54e6bf04c84543809935a380b1d759f8~mv2.jpg",evidence:"La <b>Mayo Clinic</b> enfatiza que la combinación de Calcio, Magnesio y Vitamina D es la única vía clínica efectivo para prevenir la osteoporosis y fracturas óseas en adultos, mejorando la densidad mineral ósea.",hgw_desc:"HGW presenta una fórmula líquida de absorción ultra rápida (superior a las tabletas). Fortalece huesos y dientes, y previene eficazmente calambres musculares y dolor articular."},
+cerebro:{name:"Zinc & Selenio Capsules",image:"https://hgw-bolivia.com/images/43.png",evidence:"Estudios neurológicos de <b>Johns Hopkins</b> asocian la deficiencia de Zinc con depresión y deterioro cognitivo. El Selenio actúa como un potente antioxidante cerebral que protege las neuronas del estrés oxidativo.",hgw_desc:"Apoyo fundamental para el sistema nervioso. Mejora la memoria, estabiliza el estado de ánimo y reduce los síntomas de ansiedad y fatiga mental."},
+energia:{name:"Cordyceps Capsule",image:"https://static.wixstatic.com/media/d00cad_0b36c72930184bc59d539dce9280283f~mv2.png",evidence:"Reconocido en la medicina deportiva y tradicional, estudios revisados por institutos de salud notan que el Cordyceps mejora la producción de ATP (energía celular) y la eficiencia en el uso del oxígeno.",hgw_desc:"La solución definitiva para la fatiga crónica. Aumenta la resistencia física, mejora el rendimiento deportivo y optimiza la función pulmonar y renal."},
+general:{name:"Spirulina Plus Capsule",image:"https://static.wixstatic.com/media/d00cad_3e5bc0b597ad48589144c327994fb9df~mv2.png",evidence:"Considerada un superalimento por expertos en nutrición global y la OMS debido a su perfil completo de proteínas, vitaminas del complejo B y minerales esenciales de alta biodisponibilidad.",hgw_desc:"Nutrición celular completa en una cápsula. Alcaliniza el cuerpo, mejora la digestión, desintoxica la sangre y aporta energía vital para afrontar el día a día."},
+stress:{name:"Ashwaganda Coffee",image:"https://hgw-bolivia.com/images/aswaganda-coffee.png",evidence:"Estudios publicados por la <b>Universidad de Georgetown</b> y <b>Cambridge</b> indican que la ashwagandha reduce los niveles de cortisol, mejorando la respuesta al estrés y la salud mental.",hgw_desc:"Café con ashwagandha de HGW para promover la relajación y reducir el estrés de manera natural."},
+respiratory:{name:"Cordyceps Coffee",image:"https://static.wixstatic.com/media/d00cad_232d19999a9947518d5d44a2c02d773f~mv2.jpg",evidence:"La <b>Facultad de Medicina de Harvard</b> ha estudiado el cordyceps por su capacidad para mejorar la función pulmonar y el rendimiento atlético, especialmente en condiciones respiratorias.",hgw_desc:"Café con cordyceps de HGW para apoyar la salud respiratoria y aumentar la energía."},
+antioxidants:{name:"Berry Juice",image:"https://static.wixstatic.com/media/d00cad_1cbb13de958546f3912d3de3e3bf02f8~mv2.jpg",evidence:"Investigaciones de <b>Johns Hopkins Hospital</b> muestran que los antioxidantes en las bayas protegen contra el daño oxidativo, apoyan la salud cardiovascular y la inmunidad.",hgw_desc:"Jugo de bayas de HGW para proporcionar antioxidantes naturales y apoyar la inmunidad."},
+digestive:{name:"Probióticos HGW",image:"https://hgw-bolivia.com/images/probioticos.png",evidence:"La <b>Mayo Clinic</b> recomienda probióticos para equilibrar la microbiota intestinal, mejorar la digestión y fortalecer el sistema inmune.",hgw_desc:"Probióticos de HGW para equilibrar la flora intestinal y mejorar la digestión."},
+enzyme:{name:"Enzimas HGW",image:"https://hgw-bolivia.com/images/encimas.png",evidence:"Estudios clínicos de <b>Harvard</b> indican que las enzimas digestivas ayudan a la descomposición de alimentos, mejorando la absorción de nutrientes y reduciendo hinchazón intestinal.",hgw_desc:"Enzimas de HGW para apoyar la digestión y la absorción de nutrientes."},
+weight:{name:"Pro Shaping Tea",image:"https://static.wixstatic.com/media/d00cad_f5fceef1bac649339f86ba78a736f92c~mv2.jpg",evidence:"Mezclas herbales como esta han sido estudiadas por <b>Cambridge</b> por su capacidad para apoyar la pérdida de peso, eliminar grasas y reducir colesterol.",hgw_desc:"Té para moldear el cuerpo de HGW para eliminar grasas localizadas y reducir colesterol."},
+virus:{name:"Jinpure Tea",image:"https://static.wixstatic.com/media/d00cad_c9c5e20d35d44956a263f0ca3c8fd7a1~mv2.jpg",evidence:"Componentes antivirales en mezclas herbales han sido investigados por <b>Johns Hopkins</b> por su efectividad contra resfriados, gripe y virus.",hgw_desc:"Té Jinpure de HGW para combatir virus, resfriados y gripe."},
+sport:{name:"Bebida Energética",image:"https://hgw-bolivia.com/images/energy-drink.png",evidence:"Bebidas con aminoácidos y minerales ayudan en la recuperación muscular y reducen riesgo cardiovascular, según estudios de <b>Harvard</b>.",hgw_desc:"Bebida energética de HGW para recuperación post-ejercicio, crecimiento muscular y mejora de inmunidad."},
+protein:{name:"Proteína de Soya con Arándano",image:"https://static.wixstatic.com/media/d00cad_237d48348b95452883a486f13cf0c920~mv2.jpg",evidence:"La proteína de soya reduce colesterol y previene enfermedades cardíacas, según investigaciones de <b>Mayo Clinic</b>.",hgw_desc:"Proteína de soya con arándano de HGW para nutrición completa y salud cardíaca."},
+collagen:{name:"Péptido de Colágeno",image:"https://static.wixstatic.com/media/d00cad_c28dcebe48b945949dbfbb67e361bf12~mv2.jpg",evidence:"El colágeno mejora la salud de la piel, articulaciones y huesos, según estudios de <b>Georgetown University</b>.",hgw_desc:"Péptido de colágeno de HGW para nutrición, apoyo articular y salud de la piel."},
+vision:{name:"Blueberry Coffee",image:"https://hgw-bolivia.com/images/blueberry-coffee.png",evidence:"Estudios de la <b>Universidad de Georgetown</b> muestran que los arándanos mejoran la visión nocturna y protegen contra degeneración macular.",hgw_desc:"Café con arándanos de HGW para apoyar la salud ocular y proporcionar energía natural."},
+detox:{name:"Fresh Drink",image:"https://hgw-bolivia.com/images/fresh-drink.png",evidence:"Mezclas herbales para detox han sido estudiadas por <b>Mayo Clinic</b> por su capacidad para limpiar el colon y prevenir intoxicaciones.",hgw_desc:"Bebida fresca de HGW para desintoxicación y limpieza intestinal."},
+wine:{name:"Vino de Arándano",image:"https://static.wixstatic.com/media/d00cad_346f48ad0a304585a50416d4734b5dbf~mv2.jpg",evidence:"El vino de arándano reduce colesterol y inflamación, según <b>Harvard</b>, y apoya la salud neuronal e inmunidad.",hgw_desc:"Vino de arándano de HGW para protección antioxidante y salud cardiovascular."},
+candy:{name:"Caramelos de Arándano",image:"https://static.wixstatic.com/media/d00cad_94b83b11ccbf42a0afad48d99bd64685~mv2.jpg",evidence:"Los arándanos en forma de caramelo proporcionan beneficios nutritivos, según estudios de <b>Johns Hopkins</b>.",hgw_desc:"Caramelos de arándano de HGW para un boost nutritivo diario."},
+mermelada:{name:"Mermelada de Arándano",image:"https://static.wixstatic.com/media/d00cad_19944f7e881d4cd4ba3e398848d374f6~mv2.jpg",evidence:"Conserva los valores nutritivos de los arándanos, apoyando la salud según <b>Cambridge</b>.",hgw_desc:"Mermelada de HGW para nutrición deliciosa y beneficios antioxidantes."},
+lactiberry:{name:"Lactiberry",image:"https://static.wixstatic.com/media/d00cad_eff62ae10ded48119cb21ac5d3974312~mv2.jpg",evidence:"Fórmula a base de arándanos y lácteos para nutrición diaria, según recomendaciones de <b>Mayo Clinic</b>.",hgw_desc:"Lactiberry de HGW para nutrición instantánea y deliciosa."},
+trebol:{name:"Trebol Coffee",image:"https://static.wixstatic.com/media/d00cad_b2704e9d5c5e487199547f5ac0bc3c20~mv2.png",evidence:"El trébol rojo tiene propiedades medicinales para salud hormonal, según estudios de <b>Georgetown</b>.",hgw_desc:"Café con trébol de HGW para apoyo hormonal y bienestar."},
+berrygano:{name:"Berry Gano Coffee",image:"https://hgw-bolivia.com/images/berry-gano.png",evidence:"Combinación de bayas y ganoderma para cuidado de salud, según <b>Harvard</b>.",hgw_desc:"Café berry gano de HGW para beneficios funcionales."},
+coffeiceps:{name:"Coffee Ceps",image:"https://hgw-bolivia.com/images/cofee-ceps.png",evidence:"Apoya salud de riñón y pulmón, alivia menopausia, según <b>Johns Hopkins</b>.",hgw_desc:"Café ceps de HGW para salud renal y pulmonar."},
+blacktea:{name:"Black Tea Coffee",image:"https://hgw-bolivia.com/images/black-tea.png",evidence:"Combinación para cuidado de salud, según <b>Mayo Clinic</b>.",hgw_desc:"Café té negro de HGW para beneficios funcionales."},
+ganodermacoffee:{name:"Ganoderma Coffee",image:"https://static.wixstatic.com/media/d00cad_fb62d82d360a4dec9806b6d6a7f80319~mv2.jpg",evidence:"Ganoderma para inmunidad, según <b>Cambridge</b>.",hgw_desc:"Café ganoderma de HGW para cuidado de salud."},
+phyto:{name:"Phyto Vitaly",image:"https://hgw-bolivia.com/images/phyto-vitaly.png",evidence:"Fito nutrientes para vitalidad, según estudios de <b>Harvard</b>.",hgw_desc:"Phyto Vitaly de HGW para energía y salud general."},
+uva:{name:"Extracto de Uva",image:"https://hgw-bolivia.com/images/extracto-de-uva.png",evidence:"Resveratrol para salud cardiovascular, según <b>Mayo Clinic</b>.",hgw_desc:"Extracto de uva de HGW para protección antioxidante."},
+lecitina:{name:"Lecitina",image:"https://static.wixstatic.com/media/d00cad_aa1b279dddd94969a7c08d9099b1d420~mv2.png",evidence:"Apoya salud arterial, según <b>Johns Hopkins</b>.",hgw_desc:"Lecitina de HGW para elasticidad arterial."},
+skin:{name:"Eye Cream",image:"https://static.wixstatic.com/media/d00cad_131dbe6bfe6240c5a6c1011daa267ba4~mv2.jpg",evidence:"Ingredientes para reducir arrugas, según estudios dermatológicos de <b>Georgetown</b>.",hgw_desc:"Crema para ojos de HGW para cuidado de la piel."},
+zimocaldiet:{name:"Zimocal Diet",image:"https://hgw-bolivia.com/images/0265.png",evidence:"Regula azúcar en sangre y aumenta densidad ósea, según <b>Mayo Clinic</b>.",hgw_desc:"Zimocal Diet de HGW para salud ósea y regulación glucémica."}
+};
+
+/* ===== MENÚS NUTRICIONALES ===== */
+const mk=(t,d)=>({title:t,days:d.map((m,i)=>({day:['🟢 Lunes','🔵 Martes','🟡 Miércoles','🟣 Jueves','🟠 Viernes','🔴 Sábado','⚪ Domingo'][i],meals:m.map((s,j)=>{const k=s.lastIndexOf('|'),n=s.slice(k+1).split(' ');return{type:['Desayuno 🌅','Media mañana ⏰','Almuerzo 🍽️','Merienda 🍵','Cena 🌙'][j],desc:s.slice(0,k),nutrition:`≈${n[0]} kcal · ${n[1]}g prot · ${n[2]}g grasa · ${n[3]}g carb`}})}))});
+const nutritionalMenus={
+diabetes:mk("Menú Semanal para Control de Diabetes 🌿🍏",[
+["Avena cocida con canela y manzana picada sin azúcar, té verde.|290 9 5 50","10 almendras crudas.|70 3 6 2","Pechuga de pollo a la plancha con quinua y ensalada de pepino y tomate.|420 36 9 36","Yogur natural sin azúcar con semillas de chía.|130 9 5 12","Filete de merluza al vapor con brócoli y zanahoria.|300 28 8 18"],
+["Huevos revueltos con espinaca y 1 rebanada de pan integral.|300 18 12 24","Bastones de apio con hummus (2 cdas).|110 4 6 10","Lomo de res magro con lenteja guisada y ensalada verde.|450 38 14 34","Manzana verde mediana.|80 0 0 21","Tortilla de claras con champiñones y espárragos.|230 22 9 10"],
+["Batido proteína de soya HGW con leche vegetal y espinaca.|260 22 6 24","Nueces (6 unidades).|100 2 9 3","Pollo al curry suave con arroz integral y zapallo al vapor.|460 32 13 48","Queso fresco bajo en grasa con tomate cherry.|130 12 6 5","Sopa de verduras con pechuga de pollo desmenuzada.|280 26 6 26"],
+["Pan integral con queso fresco y rodajas de tomate, té de manzanilla.|270 12 7 32","Pera mediana.|85 0 0 22","Trucha al horno con ensalada de quinua, pepino y tomate.|430 34 15 32","Leche descremada con canela (1 taza).|90 8 1 12","Ensalada de atún con hojas verdes, huevo duro y aceite de oliva.|310 28 14 10"],
+["Avena con frutos rojos y semillas de lino.|290 8 7 46","Yogur griego sin azúcar (1/2 taza).|100 10 2 6","Pavo a la plancha con camote al horno y ensalada verde.|440 36 11 40","Mix de semillas (girasol y zapallo).|110 5 9 4","Camarones salteados con vegetales y limón.|290 28 8 14"],
+["Yogur natural sin azúcar con fresas y chía.|220 12 6 24","Pepino en rodajas con limón.|25 1 0 5","Pollo al horno con ensalada de garbanzos y vegetales.|460 35 14 40","Café ganoderma HGW sin azúcar con almendras (8 unidades).|100 3 8 4","Tofu salteado con brócoli, pimientos y salsa de soya baja en sodio.|300 22 12 22"],
+["Omelet de claras con champiñones y queso bajo en grasa.|240 22 10 6","Uvas frescas (10-12 unidades).|60 0 0 16","Guiso de lentejas con verduras y porción pequeña de arroz integral.|420 22 8 60","Yogur natural con coco rallado sin azúcar.|130 8 6 9","Merluza a la plancha con espinaca salteada y nuez.|300 28 12 12"]
+]),
+hipertension:mk("Menú Semanal para Control de Hipertensión 🧂🚫❤️",[
+["Avena con plátano y semillas de lino, sin sal.|320 8 8 52","Frutos secos sin sal (nueces, almendras, 15g).|100 3 9 3","Pechuga de pollo hervida, quinua y ensalada de espinaca y tomate con aceite de oliva.|430 36 12 36","Plátano mediano.|105 1 0 27","Filete de pescado blanco al vapor con brócoli y zanahoria.|300 28 7 18"],
+["Pan integral sin sal con palta (aguacate) y huevo pochado.|320 14 17 26","Naranja mediana.|70 1 0 17","Lentejas guisadas sin sal con verduras y camote al horno.|440 22 8 66","Yogur natural con arándanos frescos.|140 9 4 18","Pavo a la plancha con ensalada de pepino y apio.|320 32 9 14"],
+["Batido de espinaca, manzana, pepino y limón.|120 3 1 26","Papaya en trozos (1 taza).|55 1 0 14","Salmón al horno sin sal, arroz integral y espárragos al vapor.|470 34 18 36","Infusión de hibisco o té de tilo (antihipertensivo natural).|5 0 0 1","Sopa de verduras sin sal con fideos integrales y pollo.|280 22 6 32"],
+["Yogur natural con manzana rallada y avena.|270 11 5 44","Mandarina.|50 1 0 13","Atún al natural con quinua y ensalada de hojas verdes.|420 34 12 36","Bastones de zanahoria y apio crudos.|40 1 0 9","Claras de huevo con vegetales salteados sin sal.|220 20 8 12"],
+["Avena con fresas y semillas de chía, leche descremada.|300 12 7 46","Pera mediana.|85 0 0 22","Pollo hervido con pasta integral, pimiento y tomate sin sal.|450 32 10 52","Arándanos frescos (1/2 taza).|45 1 0 11","Trucha al vapor con zapallo y espinaca.|310 28 11 16"],
+["Pan integral con requesón y rodajas de tomate.|260 14 6 34","Manzana verde con canela.|85 0 0 22","Garbanzos guisados con vegetales y arroz integral.|440 18 8 68","Té verde con limón.|5 0 0 1","Pollo a la plancha con ensalada mediterránea (tomate, pepino, sin sal).|380 32 14 20"],
+["Tortilla de claras con espinaca y queso fresco bajo en sodio.|250 22 10 10","Uvas frescas (1 racimo pequeño).|60 0 0 16","Merluza al horno con quinua y brócoli al vapor.|420 34 12 34","Yogur natural con papaya.|150 9 4 20","Sopa de zapallo y zanahoria sin sal con un toque de cúrcuma.|180 5 4 30"]
+]),
+cardiopatia:mk("Menú Semanal para Cardiopatía ❤️🩺",[
+["Avena con arándanos y nueces, leche descremada.|340 12 12 46","Vino de arándano HGW (porción moderada) o jugo natural de arándano sin azúcar.|90 0 0 18","Salmón al horno, quinua y ensalada de espinaca con aceite de oliva.|480 34 22 36","Té de trébol rojo HGW o té verde.|5 0 0 1","Pechuga de pavo a la plancha con vegetales al vapor.|340 32 12 18"],
+["Pan integral con palta y huevo pochado.|330 14 17 28","Almendras sin sal (10 unidades).|70 3 6 2","Lentejas guisadas con verduras y arroz integral.|450 22 8 66","Proteína de soya HGW con arándano y leche descremada.|160 18 4 14","Pescado blanco al vapor con brócoli y zanahoria.|300 28 7 18"],
+["Yogur natural con granola sin azúcar y arándanos.|280 12 8 38","Naranja mediana.|70 1 0 17","Atún al natural con ensalada mediterránea y pan integral.|420 32 14 30","Infusión de hibisco o trébol rojo HGW.|10 0 0 2","Crema de zapallo casera con pan integral.|260 8 6 42"],
+["Batido de fresas, arándanos y avena con leche vegetal.|300 10 7 48","Mix de nueces y almendras sin sal (15g).|100 3 9 3","Trucha al horno con quinua y espárragos.|440 36 16 30","Vino de arándano HGW o té rojo.|90 0 0 18","Garbanzos con espinaca y tomate al horno.|310 14 10 40"],
+["Huevos revueltos con tomate y espinaca, pan integral.|310 18 13 26","Manzana con canela.|85 0 0 22","Pavo a la plancha con pasta integral y pimientos.|460 32 12 52","Smoothie de arándano con yogur natural.|150 8 4 22","Camarones con espárragos y limón al vapor.|270 28 6 12"],
+["Panqueques de avena con frutos rojos sin azúcar.|330 12 9 50","Café ganoderma HGW sin azúcar.|25 0 0 4","Salmón a la plancha con camote y ensalada de hojas verdes.|470 34 20 36","Yogur natural con coco rallado sin azúcar.|130 8 6 10","Ensalada de garbanzos con pepino, tomate y aceite de oliva.|300 12 12 36"],
+["Tortilla de claras con champiñones y jugo de arándano HGW.|260 22 8 18","Fresas frescas (1 taza).|50 1 0 12","Lentejas con vegetales y una rebanada de pan integral.|420 22 8 60","Infusión de trébol rojo HGW.|10 0 0 2","Sopa de vegetales con pollo desmenuzado y aceite de oliva.|280 24 8 28"]
+]),
+cancer:mk("Menú Semanal de Apoyo Nutricional Oncológico 🎗️🍲",[
+["Batido proteico HGW con leche vegetal, plátano y avena.|350 22 9 48","Yogur natural con papaya y miel de abeja.|160 8 4 26","Pollo al horno con quinua, zanahoria y zapallo.|460 36 12 44","Batido de frutas con proteína de soya HGW.|240 20 6 28","Pescado blanco al vapor con puré de camote y espinaca.|360 28 10 38"],
+["Avena con arándanos, miel y nueces.|360 9 12 54","Naranja mediana con jengibre (infusión).|80 1 0 19","Pechuga de pavo con pasta integral y salsa de tomate natural.|470 34 10 54","Requesón con fresas y semillas de chía.|180 14 6 18","Crema de brócoli y zanahoria con pan integral.|280 10 8 40"],
+["Pan integral con queso fresco, tomate y huevo pochado.|330 18 12 30","Papaya en trozos (1 taza).|55 1 0 14","Salmón al horno con quinua y espárragos.|480 34 22 30","Phyto Vitaly HGW con agua y jugo de limón.|80 2 1 14","Lentejas guisadas con vegetales y aceite de oliva.|380 20 9 52"],
+["Yogur griego con miel, nueces y arándanos.|320 14 12 38","Manzana verde con mantequilla de almendra (1 cda).|140 3 8 18","Pollo desmenuzado con camote y ensalada de espinaca.|450 34 12 42","Batido de plátano con proteína de soya HGW.|280 22 6 36","Tortilla de huevo con champiñones y espinaca.|300 20 16 14"],
+["Avena con plátano, miel y semillas de chía.|350 9 8 58","Pera con yogur natural.|170 6 3 32","Atún con arroz integral, brócoli y zanahoria.|440 34 10 46","Frutos secos mixtos y jugo de naranja natural.|200 4 10 24","Caldo de pollo con quinua y vegetales.|300 24 8 32"],
+["Batido de papaya, zanahoria, jengibre y miel.|200 3 2 46","Tostada integral con requesón.|180 10 4 24","Pechuga de pollo al horno con garbanzos y ensalada.|460 36 14 40","Yogur con granola y arándanos.|230 10 7 32","Sopa de zapallo con jengibre y una rebanada integral.|240 6 5 42"],
+["Huevos revueltos con espinaca, tomate y pan integral.|330 18 14 28","Smoothie de fresas con proteína HGW y leche vegetal.|260 20 6 30","Trucha con quinua y vegetales asados (pimiento, berenjena).|460 34 16 38","Naranja con jengibre rallado.|80 1 0 19","Lentejas con camote y hojas verdes.|380 20 8 54"]
+]),
+cancer_gastrico:mk("Menú Semanal Suave para Salud Gástrica Oncológica 🥣🎗️",[
+["Avena bien cocida y suave con plátano maduro triturado.|280 8 4 52","Yogur natural descremado (porción pequeña).|100 8 2 12","Pollo hervido desmenuzado con arroz blanco y zanahoria cocida.|400 30 8 46","Manzana rallada sin cáscara.|60 0 0 15","Sopa suave de zapallo y zanahoria con fideos integrales.|260 8 5 44"],
+["Puré de plátano con avena y miel de abeja.|310 6 4 62","Compota de pera sin azúcar.|70 0 0 18","Pescado blanco hervido con arroz integral y puré de zanahoria.|390 28 8 44","Requesón blando con pera madura.|160 10 4 20","Caldo de pollo suave con fideos y espinaca cocida.|240 18 6 28"],
+["Yogur natural con proteína de soya HGW y papaya madura.|260 20 5 30","Galletas integrales suaves (3 unidades).|90 2 3 14","Pechuga de pavo hervida con puré de camote y zanahoria.|420 32 10 46","Manzana madura sin cáscara en compota.|80 0 0 21","Crema de espárragos con pan integral tostado.|240 8 6 36"],
+["Claras de huevo revueltas con espinaca cocida y pan integral.|260 20 7 26","Plátano maduro triturado.|90 1 0 23","Tofu suave con arroz blanco y champiñones cocidos.|360 20 10 42","Yogur descremado natural.|100 8 2 12","Sopa de pollo con vegetales cocidos y fideos.|280 22 6 30"],
+["Avena suave con requesón y plátano.|300 14 5 52","Papaya madura picada (1/2 taza).|55 0 0 14","Pechuga de pollo horneada suave con quinua y puré de zapallo.|430 34 10 44","Gelatina natural sin azúcar.|40 2 0 8","Crema de zanahoria y camote con un pan integral.|260 6 5 46"],
+["Pan integral con queso fresco y plátano maduro.|280 12 6 44","Manzana rallada.|60 0 0 15","Merluza hervida con arroz blanco y zanahoria cocida.|380 28 7 40","Batido suave de proteína HGW con agua y pera.|200 18 3 24","Sopa de verduras suave con pollo y fideos.|270 20 5 32"],
+["Yogur natural con avena cocida y papaya.|270 12 5 42","Galletas de arroz (2 unidades).|70 1 1 14","Pavo desmenuzado con puré de camote y espárragos cocidos.|400 30 10 42","Compota de manzana con canela.|80 0 0 20","Caldo de verduras con tofu suave y fideos integrales.|260 14 6 34"]
+]),
+gastritis:mk("Menú Semanal para Gastritis 🥣🚫🌶️",[
+["Avena suave con plátano maduro y miel de abeja.|300 7 4 58","Yogur natural descremado (1/2 taza).|80 6 1 10","Pechuga de pollo hervida con arroz blanco y zanahoria cocida.|400 32 8 44","Infusión de manzanilla o té de jengibre suave.|5 0 0 1","Sopa suave de zanahoria y camote con pollo.|280 22 6 32"],
+["Pan integral tostado con requesón y plátano maduro.|290 12 5 48","Manzana madura sin cáscara.|60 0 0 15","Pescado blanco al horno con arroz integral y espárragos al vapor.|390 28 9 40","Leche descremada tibia con miel (1 taza).|120 8 2 18","Crema de zapallo sin condimentos fuertes.|200 5 4 36"],
+["Yogur natural con avena cocida y papaya.|270 12 4 42","Pera madura sin cáscara.|85 0 0 22","Pavo hervido desmenuzado con quinua y zanahoria.|420 32 9 44","Galletas integrales suaves con requesón.|160 8 4 22","Fideos integrales con pollo y vegetales bien cocidos.|300 20 7 38"],
+["Claras de huevo con espinaca cocida y pan integral.|250 20 6 24","Papaya fresca (1/2 taza).|55 0 0 14","Lentejas suaves con arroz blanco y zanahoria cocida.|400 20 6 64","Infusión de manzanilla.|5 0 0 0","Merluza al vapor con puré de camote.|340 26 8 40"],
+["Avena cocida con plátano y canela (sin azúcar añadida).|290 7 4 54","Gelatina natural sin saborizantes artificiales.|40 2 0 8","Pollo a la plancha suave con arroz integral y zucchini cocido.|420 32 9 44","Yogur descremado natural.|100 8 2 12","Sopa de verduras suaves con fideos y pollo.|270 20 5 32"],
+["Pan integral con queso fresco y plátano.|280 12 6 44","Manzana rallada con miel.|90 0 0 23","Trucha al horno con arroz blanco y espárragos cocidos.|400 30 12 36","Leche tibia de avena natural.|100 3 3 16","Crema de zanahoria y camote con pan tostado.|250 6 5 44"],
+["Yogur natural con papaya madura y avena fina.|270 12 4 42","Compota de pera sin azúcar.|70 0 0 18","Pavo desmenuzado con puré de camote y zanahoria.|410 30 9 46","Infusión de regaliz o manzanilla.|5 0 0 1","Sopa de arroz con pollo y vegetales suaves.|280 20 6 36"]
+]),
+enfermedad_renal:mk("Menú Semanal para Enfermedad Renal Crónica 🫘💧",[
+["Claras de huevo con pan blanco tostado (bajo en potasio).|220 16 4 28","Manzana sin cáscara (bajo potasio).|60 0 0 15","Pechuga de pollo pequeña a la plancha con arroz blanco y pepino.|380 28 8 46","Galletas de arroz (2 unidades) sin sal.|70 1 1 14","Merluza al vapor con pasta blanca y pimientos cocidos.|340 26 7 42"],
+["Pan blanco con mantequilla sin sal y miel.|280 5 9 44","Pera sin cáscara.|85 0 0 22","Tofu firme con arroz blanco y coliflor cocida.|360 18 10 46","Uvas frescas (8-10 unidades).|50 0 0 13","Claras de huevo en tortilla con pimientos y pan blanco.|280 18 8 32"],
+["Avena cocida con azúcar y manzana rallada.|270 6 4 50","Pan tostado blanco con mermelada sin sal.|140 2 1 30","Pollo a la plancha con pasta blanca y tomate cocido.|420 28 10 52","Uvas o arándanos (porción pequeña).|50 0 0 12","Sopa ligera de fideos blancos con pollo y pepino cocido.|280 20 6 34"],
+["Pan blanco con huevo pochado sin sal.|260 14 8 30","Manzana en rodajas.|60 0 0 15","Merluza al horno con arroz blanco y coliflor al vapor.|370 28 8 40","Galletas de arroz con mermelada baja en azúcar.|120 1 1 26","Fideos blancos con tofu suave y pimientos.|340 16 9 48"],
+["Arroz con leche (porción pequeña, sin sal, azúcar moderada).|280 6 5 52","Pera en almíbar sin sal (porción pequeña).|90 0 0 22","Pollo hervido con arroz blanco y zanahoria lixiviada.|400 28 8 48","Arándanos frescos (1/4 taza).|25 0 0 6","Claras salteadas con pimientos y pan blanco tostado.|270 18 7 30"],
+["Tostadas blancas con requesón y uvas.|280 12 6 40","Galletas de arroz con miel.|120 1 1 26","Pescado blanco con pasta y coliflor cocida sin sal.|380 26 8 46","Manzana rallada con canela.|65 0 0 16","Sopa blanca de fideos con pollo desmechado.|280 20 5 36"],
+["Avena suave con pera rallada y miel.|280 6 4 52","Pan tostado con mermelada (sin sal).|140 2 1 30","Tofu a la plancha con arroz blanco y pepino fresco.|350 18 10 44","Uvas frescas (8 unidades).|50 0 0 13","Caldo suave de pollo con fideos blancos y coliflor.|270 18 5 34"]
+]),
+cirrosis_hepatica:mk("Menú Semanal para Cirrosis Hepática 🫀🌿",[
+["Avena cocida con plátano y miel, sin sal.|320 8 4 60","Yogur natural descremado.|100 8 2 12","Claras de huevo con arroz integral y espinaca cocida.|360 20 6 52","Manzana sin cáscara.|60 0 0 15","Caldo de verduras con fideos y pollo sin sal.|260 18 5 32"],
+["Pan integral tostado con requesón y pera.|290 12 5 46","Compota de manzana sin azúcar añadida.|70 0 0 18","Merluza al vapor con camote y zanahoria cocida.|380 26 7 44","Infusión de diente de león o té verde suave.|5 0 0 1","Arroz integral con tofu suave y brócoli al vapor.|360 18 9 48"],
+["Yogur natural con avena y papaya madura.|270 12 4 42","Uvas frescas (10 unidades).|60 0 0 16","Pollo hervido con quinua y zapallo al vapor.|420 32 9 46","Requesón con pera madura.|150 10 3 20","Crema de zanahoria y espinaca con pan tostado.|240 7 5 40"],
+["Claras de huevo con espinaca y pan integral sin sal.|260 20 6 26","Plátano maduro pequeño.|90 1 0 23","Pescado blanco con arroz integral y brócoli cocido.|390 28 8 44","Yogur descremado con miel.|110 8 2 16","Sopa de fideos con pollo y zanahorias.|270 20 5 32"],
+["Avena con manzana y canela.|290 7 4 52","Pera en rodajas.|85 0 0 22","Tofu con camote al horno y ensalada de zanahoria.|360 18 10 44","Leche descremada tibia (1 taza).|90 8 0 12","Pollo con arroz integral y espárragos al vapor.|410 30 9 46"],
+["Pan integral con queso fresco bajo en grasa y plátano.|280 12 6 44","Papaya fresca (1/2 taza).|55 0 0 14","Pechuga de pavo con quinua y brócoli sin sal.|430 34 10 44","Compota de manzana.|80 0 0 20","Crema de zapallo con pan integral tostado.|240 6 5 42"],
+["Yogur natural con uvas y semillas de lino.|220 10 6 28","Galletas integrales sin sal (2 unidades).|80 2 2 14","Merluza con pasta integral y espinaca cocida.|390 28 8 46","Infusión de manzanilla.|5 0 0 0","Arroz integral con claras salteadas y zanahoria.|340 18 6 50"]
+]),
+epoc:mk("Menú Semanal para EPOC (Salud Respiratoria) 🫁💨",[
+["Huevo pochado con pan integral y naranja (vitamina C).|310 15 11 36","Nueces (6 unidades) — omega-3 antiinflamatorio.|100 2 9 3","Pechuga de pollo al horno, quinua y zanahoria al vapor.|440 36 11 42","Yogur natural con arándanos.|140 9 4 18","Salmón a la plancha con espárragos y pan integral.|410 32 18 26"],
+["Avena con plátano y semillas de chía.|330 9 8 54","Papaya fresca (vitamina C y A).|55 1 0 14","Pavo a la plancha con camote al horno y brócoli.|440 34 11 42","Té de jengibre con miel (antinflamatorio respiratorio).|40 0 0 10","Sopa de verduras con pollo y fideos integrales.|290 22 7 34"],
+["Yogur natural con granola y naranja exprimida.|300 12 8 44","Almendras (10 unidades).|70 3 6 2","Salmón al horno con arroz integral y espinaca salteada.|470 34 20 36","Batido de arándanos y espinaca con leche vegetal.|160 5 4 26","Trucha a la plancha con zapallo al vapor y pan integral.|380 28 14 34"],
+["Pan integral con queso fresco y tomate, té de jengibre.|280 13 8 34","Mandarina (vitamina C).|50 1 0 13","Pollo al horno con quinua y pimientos asados.|450 34 12 44","Fresas con yogur natural.|130 8 3 18","Crema de brócoli y zanahoria con pan integral.|280 9 7 44"],
+["Tortilla de huevo con espinaca y champiñones.|290 18 14 14","Naranja mediana.|70 1 0 17","Atún con pasta integral y vegetales salteados.|450 32 12 50","Phyto Vitaly HGW con agua y limón.|80 2 1 14","Caldo de verduras con pollo desmenuzado.|270 22 6 26"],
+["Batido de plátano, avena y leche vegetal.|340 9 7 58","Arándanos frescos (1/2 taza).|45 1 0 11","Pechuga de pollo con camote y brócoli al horno.|440 34 11 42","Yogur con nueces.|190 10 12 12","Lentejas suaves con vegetales y aceite de oliva.|370 18 9 52"],
+["Huevos revueltos con tomate y pan integral, jugo de naranja natural.|340 18 14 34","Mix de frutos secos sin sal.|120 3 10 5","Salmón con quinua y espárragos al vapor.|480 34 20 34","Té de jengibre con miel.|40 0 0 10","Pavo con arroz integral y espinaca salteada.|400 32 11 42"]
+]),
+accidente_cerebrovascular:mk("Menú Semanal Post Accidente Cerebrovascular 🧠❤️",[
+["Avena con arándanos y semillas de lino (omega-3).|310 9 9 46","Nueces (6 unidades) sin sal.|100 2 9 3","Salmón al horno con quinua y espinaca.|480 34 20 34","Yogur natural con fresas.|130 8 3 18","Pollo hervido con verduras suaves y arroz integral.|400 30 9 46"],
+["Pan integral con palta y huevo pochado.|330 14 17 28","Naranja mediana (vitamina C, antioxidante).|70 1 0 17","Lentejas con vegetales y camote al horno.|440 20 8 68","Batido de arándanos con yogur natural.|160 9 4 22","Trucha al vapor con brócoli y pan integral.|380 28 14 32"],
+["Yogur con granola baja en azúcar y arándanos.|280 12 8 38","Manzana verde.|80 0 0 21","Pechuga de pollo con pasta integral y tomate natural.|450 34 10 52","Almendras (10 unidades) sin sal.|70 3 6 2","Sopa de zapallo y zanahoria con pollo desmenuzado.|300 22 7 36"],
+["Tortilla de claras con espinaca y pan integral.|270 22 8 24","Arándanos frescos (1/2 taza).|45 1 0 11","Atún con quinua y ensalada de hojas verdes.|420 34 12 36","Infusión de té verde (antioxidante).|5 0 0 1","Garbanzos con espinaca y aceite de oliva.|310 14 11 40"],
+["Avena con plátano y semillas de chía.|330 9 8 54","Pera fresca.|85 0 0 22","Merluza al horno con camote y brócoli.|390 28 8 44","Fresas con yogur natural.|130 8 3 18","Caldo de verduras con fideos integrales y pollo.|270 20 6 30"],
+["Pan integral con requesón y tomate.|260 13 6 34","Naranja o mandarina.|70 1 0 17","Pollo al horno con arroz integral y pimientos asados.|450 34 12 46","Batido de espinaca, manzana y avena.|180 5 3 34","Lentejas suaves con zanahoria y pan integral.|390 20 7 56"],
+["Huevos revueltos con espinaca, tomate y pan integral.|320 18 13 26","Mix de frutos secos sin sal (15g).|100 3 9 3","Salmón con quinua y vegetales asados.|480 34 20 36","Yogur natural con arándanos y lino.|160 9 6 18","Sopa de verduras suave con pollo desmechado.|280 22 6 28"]
+]),
+vih:mk("Menú Semanal de Apoyo Nutricional VIH/SIDA 🛡️🍽️",[
+["Batido proteico HGW con leche entera, plátano y miel.|420 24 10 58","Pan integral con mantequilla de maní y manzana.|280 9 14 32","Carne magra guisada con arroz integral, zanahoria y zapallo.|520 38 16 52","Yogur entero con granola y naranja.|290 11 8 42","Pollo al horno con pasta integral y espinaca.|480 36 14 52"],
+["Huevos revueltos (2) con queso, pan integral y jugo de naranja.|420 22 18 40","Plátano con nueces.|200 3 9 28","Salmón a la plancha con quinua, brócoli y zanahoria.|510 36 22 40","Batido de frutas con proteína de soya HGW.|280 20 6 36","Lentejas con vegetales, camote y aceite de oliva.|460 22 10 68"],
+["Avena con leche entera, plátano y miel.|400 12 9 66","Queso fresco con tomate y pan integral.|220 14 8 24","Pollo al curry con arroz integral y pimientos.|500 34 14 56","Yogur con papaya y semillas de chía.|200 10 6 26","Trucha con pasta integral y espárragos al vapor.|470 34 16 46"],
+["Tostadas integrales con palta y huevos pochados.|410 16 22 38","Frutos secos mixtos y una naranja.|220 5 12 24","Pavo con arroz integral, zapallo y ensalada verde.|490 36 12 52","Batido proteico HGW con leche y fresas.|310 22 8 36","Garbanzos con espinaca, tomate y aceite de oliva.|380 16 12 50"],
+["Yogur griego con granola, miel y arándanos.|380 16 10 54","Manzana con mantequilla de almendra.|200 4 10 26","Atún con quinua y ensalada mediterránea.|460 36 14 40","Pan con requesón y papaya.|260 12 6 38","Caldo nutritivo de pollo con fideos, huevo y vegetales.|400 28 12 42"],
+["Omelet de 2 huevos con queso, champiñones y pan integral.|400 24 20 30","Leche entera con proteína de soya HGW.|250 20 8 24","Carne magra con arroz integral, zanahoria y espinaca.|510 38 16 50","Yogur con frutos rojos y granola.|280 10 8 40","Salmón a la plancha con camote y brócoli.|480 34 20 40"],
+["Avena enriquecida con nueces, miel y plátano.|420 10 12 66","Requesón con fresas y granola.|230 14 6 28","Pollo horneado con quinua, pimientos y zapallo.|500 36 14 50","Batido de papaya, naranja y proteína HGW.|300 22 6 40","Lentejas con vegetales y rebanada de pan integral.|440 22 9 62"]
+]),
+tuberculosis:mk("Menú Semanal de Refuerzo Nutricional (Tuberculosis) 💪🍽️",[
+["Huevos revueltos con espinaca, queso y pan integral, jugo de naranja.|420 22 18 38","Batido proteico HGW con leche y plátano.|360 22 8 52","Pollo al horno con arroz integral, zanahoria y zapallo.|500 36 12 54","Yogur entero con miel y nueces.|280 10 12 32","Lentejas guisadas con camote y ensalada verde.|440 22 8 66"],
+["Avena con leche entera, plátano y miel.|400 12 9 66","Pan integral con mantequilla de maní y naranja.|300 9 14 36","Carne magra con quinua, brócoli y zanahoria.|520 40 16 46","Requesón con papaya y granola.|260 14 6 34","Trucha a la plancha con arroz integral y espárragos.|460 34 16 42"],
+["Tostadas con palta, huevo pochado y jugo de naranja.|410 16 22 38","Proteína de soya HGW con leche y arándanos.|280 20 6 36","Pollo al curry con arroz integral y pimientos.|500 34 14 56","Leche entera con miel y canela.|180 8 4 28","Sopa de verduras con huevo, pollo y fideos integrales.|380 26 10 44"],
+["Yogur griego con granola, nueces y miel.|380 16 10 54","Frutos secos y papaya (vitamina A).|220 4 12 26","Salmón con quinua, espinaca y zanahoria.|510 36 22 40","Batido de plátano con proteína HGW.|320 22 7 44","Garbanzos guisados con vegetales y pan integral.|420 18 10 58"],
+["Omelet de 2 huevos con champiñones y queso, pan integral.|400 24 20 28","Manzana con mantequilla de maní.|200 5 10 26","Pavo al horno con camote, brócoli y ensalada.|490 36 12 52","Yogur con fresas y semillas de chía.|200 10 6 24","Caldo nutritivo de pollo con quinua y vegetales.|380 26 10 42"],
+["Avena enriquecida con huevo, leche y plátano.|440 18 10 62","Requesón con naranja y pan integral.|260 14 5 36","Pollo con arroz integral, zanahoria y brócoli.|500 36 12 54","Batido de proteína HGW con leche y papaya.|320 22 8 40","Lentejas con espinaca y rebanada de pan integral.|420 20 8 62"],
+["Huevos revueltos con queso, espinaca y pan integral.|400 22 18 28","Leche entera con miel y avena.|280 9 6 46","Carne magra con pasta integral, tomate y vegetales.|520 38 16 54","Yogur griego con granola y arándanos.|300 14 8 42","Trucha con arroz integral, zapallo y espinaca.|460 32 16 44"]
+]),
+chagas:mk("Menú Semanal para Enfermedad de Chagas 💛❤️",[
+["Avena con arándanos y semillas de chía, leche descremada.|310 10 8 48","Nueces (6 unidades) sin sal.|100 2 9 3","Pechuga de pollo a la plancha con quinua y espinaca.|430 36 11 36","Yogur natural con papaya.|150 9 4 20","Merluza al vapor con brócoli y arroz integral.|380 28 8 44"],
+["Pan integral con queso fresco y naranja.|280 12 7 38","Manzana verde.|80 0 0 21","Salmón al horno con arroz integral y zanahoria.|470 34 20 38","Infusión de hibisco (cardioprotector natural).|5 0 0 1","Pavo a la plancha con camote y espárragos.|420 34 11 42"],
+["Yogur natural con granola y arándanos.|280 12 8 38","Mandarina.|50 1 0 13","Lentejas guisadas con vegetales y aceite de oliva.|430 20 10 60","Batido de arándanos con yogur.|160 9 4 22","Trucha con espinaca salteada y pan integral.|380 28 14 28"],
+["Claras de huevo con pan integral y tomate.|260 20 6 28","Arándanos frescos (1/2 taza).|45 1 0 11","Pollo al horno con pasta integral y pimientos.|450 34 12 52","Té de trébol rojo HGW.|10 0 0 2","Garbanzos con espinaca y aceite de oliva.|310 14 11 40"],
+["Avena con plátano y semillas de lino.|330 9 8 54","Pera fresca.|85 0 0 22","Atún con quinua y ensalada de hojas verdes.|420 34 12 36","Yogur natural con fresas.|130 8 3 18","Sopa de verduras con pollo y fideos integrales.|280 22 6 30"],
+["Pan integral con palta y huevo pochado.|330 14 17 28","Naranja mediana.|70 1 0 17","Merluza al horno con arroz integral y brócoli.|390 28 8 44","Infusión de hibisco.|5 0 0 1","Lentejas con zanahoria y camote.|410 20 8 64"],
+["Tortilla de claras con champiñones y pan integral.|260 22 8 22","Uvas frescas (10 unidades).|60 0 0 16","Pollo al horno con quinua y pimientos asados.|450 34 12 44","Yogur con arándanos y semillas de chía.|160 9 5 20","Crema de zapallo y zanahoria con pan integral.|250 7 6 42"]
+]),
+artritis:mk("Menú Semanal Antiinflamatorio para Artritis 🦴🔥🚫",[
+["Avena con arándanos, cúrcuma y semillas de lino (antiinflamatorios).|310 9 9 46","Nueces (6 unidades) — omega-3 natural.|100 2 9 3","Salmón a la plancha con quinua y espinaca.|480 34 20 34","Leche de cúrcuma con jengibre y miel (Golden Milk).|120 4 4 18","Pollo hervido con brócoli y arroz integral.|400 32 9 46"],
+["Yogur natural con fresas, semillas de chía y miel.|240 11 6 34","Arándanos frescos (1 taza) — antioxidantes.|85 1 0 21","Atún con quinua y ensalada de espinaca y pimiento.|420 34 12 36","Té de jengibre con limón (antiinflamatorio).|15 0 0 4","Lentejas guisadas con vegetales y aceite de oliva.|400 20 9 56"],
+["Pan integral con palta y huevo pochado.|330 14 17 28","Naranja con jengibre rallado (vitamina C + antiinflamatorio).|80 1 0 19","Trucha al horno con camote y espárragos.|430 32 16 38","Batido de arándanos con espinaca y leche vegetal.|160 5 4 26","Sopa de zapallo con cúrcuma y pollo desmechado.|280 22 7 32"],
+["Batido de cúrcuma, piña y leche de coco.|260 3 10 40","Almendras (10 unidades).|70 3 6 2","Salmón con arroz integral, brócoli y zanahoria.|480 34 20 40","Yogur con uvas y semillas de lino.|200 10 7 24","Garbanzos con espinaca y aceite de oliva.|310 14 11 40"],
+["Avena con plátano, canela y nueces.|360 10 12 54","Pera fresca.|85 0 0 22","Pollo al horno con quinua y pimientos asados.|450 34 12 44","Golden Milk HGW (leche de cúrcuma).|120 4 4 18","Atún con ensalada de espinaca, tomate y aceite de oliva.|310 28 14 12"],
+["Yogur con granola, arándanos y semillas de chía.|290 12 9 38","Mix de nueces y pasas (sin sal).|140 3 9 14","Merluza a la plancha con camote y espinaca salteada.|380 28 9 40","Té de jengibre y hibisco.|15 0 0 3","Sopa antiinflamatoria de zanahoria, cúrcuma y pollo.|290 22 7 34"],
+["Tortilla de claras con espinaca y cúrcuma.|230 22 8 10","Fresas frescas (1 taza).|50 1 0 12","Trucha con pasta integral y vegetales salteados.|460 32 16 46","Batido de piña, jengibre y cúrcuma.|140 1 1 34","Lentejas rojas con vegetales y aceite de oliva.|380 20 8 54"]
+]),
+asma:mk("Menú Semanal Antiinflamatorio para Asma 🫁🌬️",[
+["Avena con manzana, jengibre y miel (broncodilatador natural).|320 8 5 58","Naranja mediana (vitamina C, protectora respiratoria).|70 1 0 17","Salmón al horno con quinua y espinaca.|480 34 20 34","Té de jengibre con miel y limón.|40 0 0 10","Pollo a la plancha con brócoli y arroz integral.|420 34 10 46"],
+["Pan integral con queso fresco y arándanos frescos.|280 13 7 38","Mandarina (vitamina C).|50 1 0 13","Pavo a la plancha con camote y pimientos asados.|430 34 11 42","Batido de fresas y espinaca con leche vegetal.|150 5 3 24","Lentejas con zanahoria y cúrcuma.|380 20 8 54"],
+["Yogur natural con arándanos y semillas de chía.|240 11 6 30","Manzana con canela.|85 0 0 22","Atún con quinua y ensalada de pimiento y tomate.|420 34 12 36","Infusión de tomillo o eucalipto (apoyo respiratorio).|10 0 0 2","Crema de zanahoria y jengibre con pan integral.|270 7 6 46"],
+["Huevos revueltos con espinaca y pan integral, jugo de naranja.|360 18 14 36","Fresas frescas (1 taza).|50 1 0 12","Trucha al horno con arroz integral y espárragos.|440 32 16 38","Té de jengibre con miel.|40 0 0 10","Sopa de verduras con pollo y cúrcuma.|280 22 7 30"],
+["Batido de manzana, espinaca y jengibre con avena.|270 7 5 50","Almendras (10 unidades) — omega-3.|70 3 6 2","Garbanzos con pimientos, espinaca y aceite de oliva.|360 14 12 46","Naranja con jengibre rallado.|80 1 0 19","Merluza al vapor con camote y zanahoria.|370 26 8 42"],
+["Avena con plátano, nueces y semillas de lino.|360 10 12 52","Mandarina (vitamina C natural).|50 1 0 13","Pollo al horno con quinua y brócoli.|440 34 12 42","Yogur con arándanos y miel.|180 9 4 26","Salmón con pasta integral y espinaca.|470 32 18 46"],
+["Tortilla de claras con pimiento y tomate.|230 20 8 14","Uvas frescas (10 unidades).|60 0 0 16","Pavo con arroz integral, zanahoria y espárragos.|430 34 11 44","Infusión de tomillo con limón.|10 0 0 2","Sopa de zanahoria, cúrcuma y jengibre con pan integral.|270 7 6 46"]
+]),
+enfermedades_tiroideas:mk("Menú Semanal para Salud Tiroidea 🦋⚖️",[
+["Huevo pochado con pan integral y naranja (yodo + vitamina C).|310 15 11 34","Nuez de Brasil (2 unidades — selenio para tiroides).|90 2 9 1","Atún con quinua y ensalada de espinaca (yodo + selenio).|430 36 12 36","Yogur natural con arándanos.|140 9 4 18","Pollo al horno con zanahoria y arroz integral.|420 34 11 46"],
+["Avena con arándanos y semillas de girasol (selenio).|310 9 9 46","Nuez de Brasil (2 unidades).|90 2 9 1","Pescado blanco (yodo) con quinua y espárragos.|400 30 9 38","Manzana con semillas de girasol.|130 3 7 18","Sopa de verduras con pollo y pan integral.|300 22 7 34"],
+["Pan integral con requesón y naranja exprimida.|290 14 6 40","Yogur natural (calcio + yodo).|120 9 4 12","Salmón (omega-3 + yodo) con arroz integral y zanahoria.|480 34 20 40","Pera con nuez de Brasil (2 unidades).|170 2 9 24","Lentejas con espinaca y camote.|400 20 8 58"],
+["Avena con plátano y semillas de girasol.|340 10 10 54","Naranja mediana.|70 1 0 17","Pechuga de pollo con quinua, espinaca y zanahoria.|440 36 11 42","Yogur con arándanos y semillas de girasol.|180 10 7 20","Trucha al vapor con arroz integral y espárragos.|440 32 16 38"],
+["Huevos revueltos con espinaca y pan integral.|300 18 12 26","Nuez de Brasil (2 unidades) con manzana.|170 2 9 22","Atún con pasta integral y vegetales salteados.|450 34 12 50","Yogur natural con miel.|140 9 4 18","Sopa de zanahoria con pollo y fideos integrales.|290 22 7 34"],
+["Yogur con granola, semillas de girasol y arándanos.|300 12 10 40","Papaya (vitamina A y C).|55 0 0 14","Merluza al horno con quinua y brócoli.|400 30 9 40","Nuez de Brasil (2) con pera.|170 2 9 24","Pollo con arroz integral y espinaca salteada.|420 34 11 44"],
+["Batido de arándanos, espinaca y leche descremada con avena.|300 12 6 48","Requesón con naranja (yodo + vitamina C).|150 10 4 18","Salmón con camote y ensalada de espinaca y tomate.|480 34 20 40","Yogur con semillas de girasol.|160 10 8 14","Lentejas con zanahoria y pan integral.|390 20 7 56"]
+]),
+default:mk("Menú Semanal General Saludable 🌈🍓",[
+["Batido de frutas con proteína de soya HGW y avena.|320 20 8 42","Una fruta de estación.|90 1 0 22","Pollo a la plancha, arroz integral y ensalada variada.|460 35 12 48","Yogur con granola y miel.|200 9 6 30","Pescado a la plancha con vegetales salteados.|320 30 10 20"],
+["Tostadas integrales con palta y huevo.|330 14 17 30","Frutos secos mixtos.|140 4 11 6","Carne magra, papa al horno y ensalada de hojas verdes.|480 36 16 44","Café con cordyceps HGW y una fruta.|110 1 2 20","Sopa de verduras con quinua.|260 10 6 38"],
+["Yogur natural con frutas y semillas de chía.|260 12 7 34","Jugo natural sin azúcar añadida.|90 1 0 21","Pasta integral con vegetales y pollo desmenuzado.|470 30 12 56","Phyto Vitaly HGW con agua.|80 3 2 10","Ensalada completa con atún y huevo duro.|330 30 16 14"],
+["Pan integral con queso fresco y tomate.|280 14 8 34","Pera mediana.|85 0 0 22","Pavo a la plancha con camote y ensalada verde.|440 34 12 42","Vaso de leche con canela.|110 8 4 12","Camarones salteados con vegetales y limón.|300 28 10 18"],
+["Avena con plátano y miel.|310 8 6 56","Naranja mediana.|70 1 0 17","Trucha al horno con arroz integral y vegetales.|460 34 16 40","Café ganoderma HGW con un puñado de nueces.|120 3 9 5","Salteado de pollo y vegetales con salsa de soya.|320 30 10 24"],
+["Yogur natural con fresas y granola.|270 11 7 38","Bastones de pepino y zanahoria con hummus.|120 4 6 14","Pollo al curry con arroz integral.|470 32 14 50","Proteína de soya HGW con leche vegetal.|170 18 5 14","Sopa de verduras con pechuga de pollo desmenuzada.|280 26 6 26"],
+["Omelet de huevo con vegetales y pan integral.|300 18 12 28","Un puñado de uvas.|60 0 0 16","Guiso de lentejas con verduras y arroz integral.|440 24 8 62","Yogur con coco rallado.|130 8 6 10","Filete de merluza a la plancha con ensalada.|310 28 12 14"]
+])
+};
+
+function generateMenuHTML(menu){
+  const id='m'+Math.random().toString(36).slice(2,7);
+  const tabs=menu.days.map((d,i)=>`<button type="button" class="day${i?'':' on'}" data-g="${id}" data-i="${i}">${d.day}</button>`).join('');
+  const pages=menu.days.map((d,i)=>`<div class="dp${i?'':' on'}" data-g="${id}" data-i="${i}">${d.meals.map(m=>`<div class="meal"><b>${m.type}</b>: ${m.desc}<em>🔥 ${m.nutrition}</em></div>`).join('')}</div>`).join('');
+  return `<section class="panel menu"><div class="mh">${menu.title}</div><div class="days">${tabs}</div>${pages}</section>`;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('.day');if(!b)return;const g=b.dataset.g,i=b.dataset.i;document.querySelectorAll(`[data-g="${g}"]`).forEach(x=>x.classList.toggle('on',x.dataset.i===i))});
+
+/* ===== PROCESAMIENTO ===== */
+form.addEventListener('submit',function(e){
+  e.preventDefault();
+  const miss=[];
+  if(!(parseInt($('age').value)>=18))miss.push(['age','Edad (mínimo 18 años)']);
+  if(!$('gender').value)miss.push(['gender','Género']);
+  if(!$('height').value)miss.push(['height','Altura']);
+  if(!$('weight').value)miss.push(['weight','Peso']);
+  if(miss.length){
+    showWarn('⚠️ Falta completar: '+miss.map(m=>m[1]).join(', ')+'.');
+    const el=$(miss[0][0]);el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});el.focus({preventScroll:true});
+    return;
+  }
+  if(!scanFinished){
+    const p=sensor.closest('.panel');p.classList.remove('hl');void p.offsetWidth;p.classList.add('hl');
+    showWarn(isScanning?('⏳ El escaneo sigue en curso (faltan '+scanLeft+' s). Espere a que llegue a 0 y vuelva a presionar SOLICITAR RESULTADOS.'):'👆 Antes de continuar, presione una vez la huella y espere 15 segundos a que termine el escaneo.');
+    return;
+  }
+  showWarn('');
+  const fd=new FormData(form);
+  const conditions=fd.getAll('conditions'),otherText=fd.get('other_conditions'),family=fd.getAll('family_conditions'),symptoms=fd.getAll('symptoms'),mental=fd.getAll('mental_conditions'),mentalSymptoms=fd.getAll('mental_symptoms');
+  const age=parseInt(fd.get('age')),gender=fd.get('gender'),height=parseInt(fd.get('height')),weight=parseInt(fd.get('weight')),stress=fd.get('stress'),sleep=parseInt(fd.get('sleep')||'0'),exercise=fd.get('exercise'),diet_type=fd.get('diet_type'),athlete=fd.get('athlete'),supp=fd.get('supplements_interest'),mhr=fd.get('mental_health_rating'),hr=fd.get('health_rating'),meals=fd.get('meals_per_day');
+  let bmiMsg='',bmi=0;
+  if(height&&weight){const h=height/100;bmi=(weight/(h*h)).toFixed(1);bmiMsg=bmi<18.5?'Bajo Peso':bmi<25?'Peso Saludable':bmi<30?'Sobrepeso':'Obesidad'}
+  $('formWrap').style.display='none';
+  const res=$('res');res.style.display='block';
+  res.innerHTML=`<div class="panel load"><div class="spn"></div><div class="lt" id="lt">Conectando con servidores de análisis médico...</div></div>`;
+  scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  const texts=["Consultando base de datos: Harvard Medical School...","Analizando protocolos de Mayo Clinic & Johns Hopkins...","Corroborando síntomas reportados por el paciente...","Generando informe personalizado..."];
+  let step=0;
+  const iv=setInterval(()=>{if(step<texts.length){$('lt').textContent=texts[step];step++}else{clearInterval(iv);renderResults(conditions,otherText,family,symptoms,mental,mentalSymptoms,age,bmi,bmiMsg,stress,sleep,exercise,diet_type,athlete,supp,mhr,hr,meals,gender)}},800);
+});
+
+function renderResults(conditions,otherText,family,symptoms,mental,mentalSymptoms,age,bmiValue,bmiMsg,stress,sleep,exercise,diet_type,athlete,supplements_interest,mental_health_rating,health_rating,meals_per_day,gender){
+  let products=[],dl='';
+  if(bmiValue>0)dl+=`<li><strong>Índice de Masa Corporal (IMC):</strong> ${bmiValue} - Clasificado como: ${bmiMsg}.</li>`;
+  const cd=conditions.map(c=>{if(c==='otro'){const d=(otherText||'').trim();return d!==''?d:'Otro'}return c});
+  if(conditions.length>0)dl+=`<li><strong>Condiciones preexistentes detectadas:</strong> ${cd.join(', ').toUpperCase()}.</li>`;
+  else dl+=`<li><strong>Condiciones preexistentes:</strong> Ninguna reportada.</li>`;
+  if(family.length>0)dl+=`<li><strong>Antecedentes Hereditarios (Riesgo):</strong> ${family.join(', ').toUpperCase()}.</li>`;
+  if(symptoms.length>0)dl+=`<li><strong>Sintomatología Física Actual:</strong> ${symptoms.join(', ').replace(/_/g,' ').toUpperCase()}.</li>`;
+  if(mental.length>0||mentalSymptoms.length>0)dl+=`<li><strong>Indicadores de Salud Mental:</strong> ${[...mental,...mentalSymptoms].join(', ').replace(/_/g,' ').toUpperCase()}.</li>`;
+  const S=hgwSolutions,add=(...k)=>k.forEach(x=>products.push(S[x]));
+  if(conditions.includes('diabetes')||(family.includes('diabetes')&&(bmiValue>29||symptoms.includes('sed_excesiva'))))add('diabetes','weight','lactiberry','vision','candy','cardio','energia');
+  if(conditions.includes('artritis'))add('energia','collagen','zimocaldiet');
+  if(conditions.includes('hipertension')||conditions.includes('cardiopatia')||(family.includes('cardio')&&age>50)||(family.includes('hipertension')&&symptoms.includes('dolor_pecho')))add('cardio');
+  if(conditions.includes('cancer')||(family.includes('cancer')&&symptoms.includes('fatiga')))add('inmune');
+  if(conditions.includes('cancer_gastrico')||(family.includes('cancer_gastrico')&&symptoms.includes('perdida_peso')))add('inmune');
+  if(conditions.includes('gastritis')||(family.includes('gastritis')&&health_rating==='mala'))add('digestive');
+  if((age>45&&supplements_interest==='yes')||(age>45&&symptoms.includes('dolor_pecho')))add('huesos');
+  if(mental.length>0||mentalSymptoms.length>0)add('cerebro');
+  if(symptoms.includes('fatiga')&&(sleep<6||exercise==='nunca'))add('energia');
+  if((stress==='yes'&&mental_health_rating==='mala')||mental.includes('ansiedad')||mentalSymptoms.includes('ansiedad_excesiva'))add('stress');
+  if(health_rating==='mala'&&symptoms.includes('fatiga'))add('respiratory');
+  if((family.includes('cancer')||age>50)&&supplements_interest==='yes')add('antioxidants');
+  if((diet_type==='ninguna'||meals_per_day==='1-2')&&health_rating==='mala')add('digestive');
+  if(diet_type==='ninguna'&&conditions.includes('otro'))add('enzyme');
+  if(bmiValue>29&&symptoms.includes('perdida_peso'))add('weight');
+  if(health_rating==='mala'&&supplements_interest==='yes')add('virus');
+  if(athlete==='yes'&&(exercise==='diario'||exercise==='3-5'))add('sport');
+  if((diet_type==='vegetariana'||diet_type==='vegana')&&supplements_interest==='yes')add('protein');
+  if(age>40&&gender==='femenino'&&supplements_interest==='yes')add('collagen');
+  if(age>40&&supplements_interest==='yes')add('vision');
+  products=[...new Set(products)];
+
+  let h=`<section class="panel rin"><h3>Resultados de tu Evaluación</h3><p>Es un placer presentarte los resultados de tu análisis personalizado. Este informe integra los datos verídicos que usted ha proporcionado con la evidencia científica de las facultades de medicina más prestigiosas del mundo: <strong>Harvard, Georgetown (EE. UU.) y Cambridge (Reino Unido)</strong>, junto con el rigor clínico de la <strong>Mayo Clinic y el Johns Hopkins Hospital</strong>.</p><p>A continuación, corroboramos su cuadro clínico y presentamos las soluciones específicas de <strong>HGW Bolivia</strong> solo si son directamente relevantes a su situación.</p></section>
+  <section class="panel diag"><div class="dt">📋 RESUMEN DE HALLAZGOS CLÍNICOS</div><ul>${dl}</ul></section>`;
+  if(!products.length)h+=`<section class="panel rin"><p style="text-align:center;color:#6db8ff">Basado en sus respuestas, no se identificaron necesidades específicas que requieran recomendaciones de productos en este momento. Consulte a un profesional de la salud para una evaluación detallada.</p></section>`;
+  else products.forEach(p=>{h+=`<div class="pc"><div class="ph">RECOMENDACIÓN: ${p.name}</div><div class="pb"><img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'"><div class="pt2"><div class="ev"><div class="tt">JUSTIFICACIÓN MÉDICA / CIENTÍFICA</div>${p.evidence}</div><div class="hg"><div class="tt">SOLUCIÓN HGW</div>${p.hgw_desc}</div></div></div></div>`});
+
+  const prio=['diabetes','hipertension','cardiopatia','cancer_gastrico','cancer','gastritis','enfermedad_renal','cirrosis_hepatica','epoc','accidente_cerebrovascular','vih','tuberculosis','chagas','artritis','asma','enfermedades_tiroideas'];
+  let key='default';for(const c of prio){if(conditions.includes(c)){key=c;break}}
+  const menu=nutritionalMenus[key]||nutritionalMenus.default;
+  if(menu)h+=generateMenuHTML(menu);
+
+  let sl="Según la Mayo Clinic, los adultos necesitan 7 o más horas de sueño por noche, idealmente 7-9 horas para buena salud, evitando problemas como aumento de peso, diabetes, hipertensión y depresión. Mantén un horario regular de sueño.";
+  if(conditions.includes('diabetes'))sl+=" Especialmente importante para controlar los niveles de glucosa.";
+  if(conditions.includes('hipertension')||conditions.includes('cardiopatia'))sl+=" Ayuda a reducir la presión arterial.";
+  if(mental.length>0||stress==='yes')sl+=" Mejora la salud mental y reduce el estrés.";
+  let st="Según Harvard Health, técnicas como enfoque en la respiración (respiraciones profundas), escaneo corporal, meditación mindfulness y yoga ayudan a reducir el estrés. Practica diariamente para contrarrestar efectos como ansiedad o depresión.";
+  if(stress==='yes'||mental.includes('ansiedad'))st+=" Enfócate en meditación para manejar la ansiedad.";
+  if(conditions.includes('hipertension'))st+=" Reduce la presión arterial mediante relajación.";
+  let wa="Según la Mayo Clinic, ingesta diaria recomendada: hombres 3.7 litros (15.5 tazas), mujeres 2.7 litros (11.5 tazas) de fluidos totales, incluyendo agua y bebidas. Bebe según sed y actividad.";
+  if(symptoms.includes('fatiga'))wa+=" Ayuda a combatir la fatiga.";
+  if(conditions.includes('diabetes'))wa+=" Importante para manejar la sed excesiva.";
+  if(athlete==='yes')wa+=" Aumenta durante ejercicio.";
+  let ex="Según Johns Hopkins Medicine, ejercicios cortos en casa para principiantes: pies separados (mantén equilibrio 10-30 seg), pies juntos, sentadillas de silla (levántate y siéntate 10 veces). Realiza 5-10 min diarios.";
+  if(age>45||conditions.includes('cardiopatia'))ex+=" Mejora equilibrio y reduce caídas.";
+  if(exercise==='nunca')ex+=" Comienza con sesiones cortas para construir hábito.";
+  if(symptoms.includes('fatiga'))ex+=" Ayuda a aumentar energía.";
+  h+=`<section class="panel menu adv"><div class="mh">Consejos Adicionales para tu Salud 💡</div><div class="as"><h4>Sueño Adecuado 😴</h4><p>${sl}</p></div><div class="as"><h4>Manejo del Estrés 🧘</h4><p>${st}</p></div><div class="as"><h4>Consumo de Agua 💧</h4><p>${wa}</p></div><div class="as"><h4>Ejercicios en Casa 🏋️‍♂️</h4><p>${ex}</p></div></section>
+  <div class="disc">Nota Legal: Esta información se genera automáticamente basada en sus respuestas y referencias bibliográficas públicas. No sustituye el consejo de un médico.</div>
+  <div class="acts"><button type="button" class="btn b1" id="copyBtn">Copiar Informe</button><button type="button" class="btn b2" id="waBtn">Enviar por WhatsApp</button><button type="button" class="btn b3" id="newBtn">Nuevo Análisis</button><a class="btn b4" href="${CONSULTA}" target="_blank" rel="noopener noreferrer">CONSULTA PERSONAL</a></div>`;
+  $('res').innerHTML=h;
+  $('copyBtn').onclick=copyResults;$('waBtn').onclick=shareWA;$('newBtn').onclick=()=>location.reload();
+  scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+}
+
+/* ===== COPIAR / WHATSAPP ===== */
+function reportText(){
+  const r=$('res').cloneNode(true);r.querySelectorAll('.dp:not(.on),.acts,.days').forEach(x=>x.remove());
+  r.querySelectorAll('.dp').forEach(x=>x.classList.add('on'));
+  document.body.appendChild(r);r.style.cssText='position:absolute;left:-9999px;display:block';
+  const t=r.innerText.replace(/\n{3,}/g,'\n\n').trim();document.body.removeChild(r);return t;
+}
+function fallbackCopy(t){const a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(a);a.select();a.setSelectionRange(0,999999);let ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(a);return ok}
+function copyResults(){
+  const t=$('res').innerText;
+  const done=ok=>toast(ok?'¡Informe copiado al portapapeles!':'No se pudo copiar. Selecciona el texto manualmente.');
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(()=>done(true)).catch(()=>done(fallbackCopy(t)));
+  else done(fallbackCopy(t));
+}
+function shareWA(){
+  let t=$('res').innerText.replace(/\n{3,}/g,'\n\n').trim();
+  if(t.length>3500)t=t.slice(0,3500)+'…';
+  const u='https://wa.me/?text='+encodeURIComponent('🌿 *Chequeo personalizado de salud · HGW*\n\n'+t);
+  const w=window.open(u,'_blank','noopener');if(!w)location.href=u;
+}
+</script>
+</body>
+</html>
