@@ -519,5 +519,19 @@ function shareWA(){
   const w=window.open(u,'_blank','noopener');if(!w)location.href=u;
 }
 </script>
+<!-- ===== BOTÓN VOLVER A INICIO (Vende y Afilia) ===== -->
+<a class="hgw-back" href="https://vende-y-afilia.vercel.app/">🏠 VOLVER A INICIO</a>
+<style>
+.hgw-back{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:99999;
+  display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;white-space:nowrap;text-decoration:none;
+  font:800 .8rem/1 'Orbitron','Montserrat',system-ui,sans-serif;letter-spacing:.08em;color:#04150f;
+  background:linear-gradient(135deg,#2ee59d,#9bff6a);box-shadow:0 10px 30px -8px rgba(46,229,157,.7);
+  transition:transform .25s,box-shadow .25s}
+.hgw-back:hover{transform:translateX(-50%) translateY(-4px);box-shadow:0 16px 40px -8px rgba(46,229,157,.9)}
+.hgw-back:active{transform:translateX(-50%) scale(.96)}
+/* Espacio extra abajo y aviso "copiado" por encima del botón */
+body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+#toast{bottom:calc(76px + env(safe-area-inset-bottom))}
+</style>
 </body>
 </html>
